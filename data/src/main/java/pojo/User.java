@@ -16,25 +16,29 @@ public class User implements Serializable {
     @GenericGenerator(name = "uuid-generator", strategy = "uuid")
     private String id;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @JoinColumn(name = "USER_ID")
     private UserLogin userLogin;
 
     private String firstName;
 
     private String secondName;
 
+    private String role;
+
     private String userStatus;
 
     public User() {
     }
 
-    public User(String firstName, String secondName, String userStatus) {
+    public User(String firstName, String secondName) {
         this.firstName = firstName;
         this.secondName = secondName;
-        this.userStatus = userStatus;
+        this.role = "user";
+        this.userStatus = "created";
     }
 
-    public String getId() {
+    public String getId(){
         return id;
     }
 
@@ -60,5 +64,28 @@ public class User implements Serializable {
 
     public void setUserStatus(String userStatus) {
         this.userStatus = userStatus;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return id != null ? id.equals(user.id) : user.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

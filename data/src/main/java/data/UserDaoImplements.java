@@ -65,7 +65,7 @@ public class UserDaoImplements implements UserDao {
     }
 
     @Override
-    public User readUser(int id) {
+    public User readUser(Serializable id) {
         Session session = sessionFactory.openSession();
         if (session.isDirty()) session.flush();
         try {
@@ -97,6 +97,16 @@ public class UserDaoImplements implements UserDao {
         } finally {
             session.close();
         }
-        session.refresh(user); //???
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<User> getUserList(Serializable id) {
+        Session session = sessionFactory.openSession();
+        String hql = "from User WHERE id=:id";
+        Query query = session.createQuery(hql);
+        query.setParameter("id", id);
+        List<User> users = query.list();
+        session.close();
+        return users;
     }
 }

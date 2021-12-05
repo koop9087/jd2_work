@@ -9,7 +9,7 @@ public interface UserDao {
 
     void deleteUser(int id);
 
-    User readUser(int id);
+    User readUser(Serializable id);
 
     void updateUser(User user);
 }

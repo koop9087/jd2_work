@@ -1,11 +1,9 @@
 package data;
 
-import com.mysql.cj.xdevapi.SessionImpl;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import pojo.User;
 import pojo.UserLogin;
 
 import java.io.Serializable;
@@ -13,7 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class UserLoginImplements implements UserLoginDao{
+public class UserLoginImplements implements UserLoginDao {
     public static final Logger logger = Logger.getLogger(
             UserLoginImplements.class.getName());
     public static final String MESSAGE_DELETED_OPERATION_IS_SUCCESSFUL = "DELETED OPERATION IS SUCCESSFUL";
@@ -48,15 +46,15 @@ public class UserLoginImplements implements UserLoginDao{
     }
 
     @Override
-    public void safeDeleteUserLogin(int id) {
+    public void safeDeleteUserLogin(Serializable id) {
         Session session = sessionFactory.openSession();
         if (session.isDirty()) session.flush();
         Transaction tr = null;
         try {
             UserLogin loadUser = session.load(UserLogin.class, id);
-            if(loadUser != null) {
+            if (loadUser != null) {
                 loadUser.setStatus("deleted");
-                logger.log(Level.FINE,() -> MESSAGE_DELETED_OPERATION_IS_SUCCESSFUL);
+                logger.log(Level.FINE, () -> MESSAGE_DELETED_OPERATION_IS_SUCCESSFUL);
             }
             tr = session.beginTransaction();
             session.save(loadUser);
@@ -71,7 +69,7 @@ public class UserLoginImplements implements UserLoginDao{
     }
 
     @Override
-    public void hardDeleteUserLogin(int id) {
+    public void hardDeleteUserLogin(Serializable id) {
         Session session = sessionFactory.openSession();
         if (session.isDirty()) session.flush();
         Transaction tr = null;
@@ -90,11 +88,11 @@ public class UserLoginImplements implements UserLoginDao{
     }
 
     @Override
-    public UserLogin readUserLogin(int id) {
+    public UserLogin readUserLogin(Serializable id) {
         Session session = sessionFactory.openSession();
         if (session.isDirty()) session.flush();
         try {
-            UserLogin loadUser = session.load(UserLogin.class, id);
+            UserLogin loadUser = session.get(UserLogin.class, id);
             if (loadUser != null) {
                 return loadUser;
             }
@@ -110,7 +108,7 @@ public class UserLoginImplements implements UserLoginDao{
     public void updateUserLogin(UserLogin user) {
         Session session = sessionFactory.openSession();
         Transaction tr = null;
-        if(session.isDirty()) session.flush();
+        if (session.isDirty()) session.flush();
         try {
             tr = session.beginTransaction();
             session.saveOrUpdate(user);
@@ -122,15 +120,25 @@ public class UserLoginImplements implements UserLoginDao{
         } finally {
             session.close();
         }
-        session.refresh(user); //???
     }
+
+    @Override
     public List<String> getAllUsersLoginsForCheck() {
         Session session = sessionFactory.openSession();
         String hql = "SELECT login FROM UserLogin";
         Query query = session.createQuery(hql);
         List<String> results = query.list();
-        logger.log(Level.INFO,"execute is normal");
+        logger.log(Level.INFO, "execute is normal");
         session.close();
         return results;
+    }
+
+    public UserLogin readUserLoginByLoginAndPassword(String login, String password) {
+        Session session = sessionFactory.openSession();
+        String hql = "FROM UserLogin WHERE login=:login AND password=:password";
+        Query query = session.createQuery(hql);
+        query.setParameter("login", login);
+        query.setParameter("password", password);
+        return (UserLogin) query.getSingleResult();
     }
 }

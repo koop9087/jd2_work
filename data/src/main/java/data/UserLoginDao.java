@@ -1,18 +1,20 @@
 package data;
 
-import pojo.User;
 import pojo.UserLogin;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface UserLoginDao {
     Serializable saveUserLogin(UserLogin user);
 
-    void safeDeleteUserLogin(int id);
+    void safeDeleteUserLogin(Serializable id);
 
-    UserLogin readUserLogin(int id);
+    UserLogin readUserLogin(Serializable id);
 
     void updateUserLogin(UserLogin user);
 
-    void hardDeleteUserLogin(int id);               //special interface for administrator
+    void hardDeleteUserLogin(Serializable id);               //special interface for administrator
+
+    List<String> getAllUsersLoginsForCheck();
 }

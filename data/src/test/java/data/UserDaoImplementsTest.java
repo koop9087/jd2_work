@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import pojo.User;
+import pojo.UserLogin;
 
 import java.io.Serializable;
 import java.util.concurrent.ThreadLocalRandom;
@@ -20,6 +21,7 @@ import static org.junit.Assert.*;
 public class UserDaoImplementsTest {
     static SessionFactory sessionFactory;
     UserDaoImplements userDaoImplements;
+    UserLoginImplements userLoginImplements;
 
     @BeforeClass
     public static void init() {
@@ -47,7 +49,7 @@ public class UserDaoImplementsTest {
         //given
         Session session = sessionFactory.openSession();
         Transaction tr = null;
-        User user = new User("Jeka","Qqwer","new");
+        User user = new User("Jeka","Qqwer");
         //when
         tr = session.beginTransaction();
         Serializable id = session.save(user);
@@ -67,5 +69,7 @@ public class UserDaoImplementsTest {
 
     @Test
     public void updateUser() {
+        //UserLogin userLogin = userLoginImplements.readUserLogin("402880e47d61da4e017d61da6ac50000");
+        //System.out.println(userLogin.getUser());
     }
 }

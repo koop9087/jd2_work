@@ -17,7 +17,8 @@ public class UserLogin implements Serializable {
     @GenericGenerator(name = "uuid-generator", strategy = "uuid")
     private String id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_USER_ID")
     private User user;
 
     private String login;
@@ -30,12 +31,7 @@ public class UserLogin implements Serializable {
 
     private String status;
 
-    public String getId() {
-        return id;
-    }
-
-    public User getUser() {
-        return user;
+    public UserLogin() {
     }
 
     public UserLogin(String login, String password, String email) {
@@ -44,15 +40,21 @@ public class UserLogin implements Serializable {
         this.email = email;
         this.date = new Date();
         this.status = "new";
-        //this.user = new User();
+        this.user = new User();
     }
 
-    public UserLogin() {
+    public String getId() {
+        return id;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public void setUser(User user) {
         this.user = user;
     }
+
 
     public String getLogin() {
         return login;
@@ -92,5 +94,20 @@ public class UserLogin implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserLogin userLogin = (UserLogin) o;
+
+        return id != null ? id.equals(userLogin.id) : userLogin.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }
