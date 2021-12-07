@@ -1,18 +1,21 @@
 package by.academy.it.userService;
 
-import data.UserDao;
+import by.academy.it.data.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import pojo.User;
+import by.academy.it.pojo.User;
 
 @Service
 public class UserService implements UserDaoService {
     @Autowired
-    UserDao userDaoImplements;
+    UserDao userDao;
+
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public void update(User user) {
-        userDaoImplements.updateUser(user);
+        userDao.updateUser(user);
     }
 }

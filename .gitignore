@@ -1,4 +1,4 @@
 # Project exclude paths
 /controller/target/
-/data/target/
+/by.academy.it.data/target/
 /ui/target/

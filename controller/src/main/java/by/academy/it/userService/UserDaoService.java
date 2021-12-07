@@ -1,6 +1,6 @@
 package by.academy.it.userService;
 
-import pojo.User;
+import by.academy.it.pojo.User;
 
 public interface UserDaoService {
     void update(User user);

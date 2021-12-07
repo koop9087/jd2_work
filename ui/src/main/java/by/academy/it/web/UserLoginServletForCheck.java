@@ -1,0 +1,26 @@
+package by.academy.it.web;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import by.academy.it.userService.UserLoginService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import java.io.IOException;
+
+@WebServlet(name = "servletCheck", urlPatterns = "/checkServlet")
+public class UserLoginServletForCheck extends HttpServlet {
+    @Autowired
+    UserLoginService userLoginController;
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String lineLogin = req.getParameter("login");
+        boolean checked = userLoginController.isLoginValidForRegistration(lineLogin);
+        if(!checked) {
+            resp.getWriter().write("this login is exists");
+        }
+    }
+}
