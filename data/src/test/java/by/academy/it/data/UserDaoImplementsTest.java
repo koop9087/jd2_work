@@ -1,5 +1,7 @@
 package by.academy.it.data;
 
+import by.academy.it.repository.UserDaoImplements;
+import by.academy.it.repository.UserLoginImplements;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

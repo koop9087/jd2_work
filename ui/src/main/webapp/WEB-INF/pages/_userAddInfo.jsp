@@ -94,7 +94,6 @@ a {
     <input type="hidden" name="command" value="add-new-user-info">
     <input type="hidden" name="user-info-id" value="${id}">
     <button id ="button" type="submit" class="registerbtn">Register</button>
-
   </div>
 </form>
 </body>

@@ -1,7 +1,8 @@
 package by.academy.it.web;
 
-import by.academy.it.data.UserDaoImplements;
+import by.academy.it.repository.UserDaoImplements;
 import by.academy.it.pojo.User;
+import by.academy.it.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +17,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @RequestMapping("/login/addedInfo")
 @SessionAttributes("id")
 public class UserServlet {
+
     @Autowired
-    UserDaoImplements userDaoImplements;
+    UserService userService;
 
     @GetMapping
     public void doGet(@RequestParam String firstName,
@@ -30,12 +32,12 @@ public class UserServlet {
     public String doPost(@RequestParam String firstName,
                          @RequestParam String secondName,
                          @ModelAttribute("id") String id) {
-        User user = userDaoImplements.readUser(id);
+        User user = userService.readUser(id);
         user.setFirstName(firstName);
         user.setSecondName(secondName);
         user.setUserStatus("created");
         user.setRole("user");
-        userDaoImplements.updateUser(user);
+        userService.updateUser(user);
         return "_user_welcome";
     }
 }

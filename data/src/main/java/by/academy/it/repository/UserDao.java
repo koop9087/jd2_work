@@ -1,8 +1,9 @@
-package by.academy.it.data;
+package by.academy.it.repository;
 
 import by.academy.it.pojo.User;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface UserDao {
     Serializable saveUser(User user);
@@ -12,4 +13,6 @@ public interface UserDao {
     User readUser(Serializable id);
 
     void updateUser(User user);
+
+    List<User> getUserList();
 }

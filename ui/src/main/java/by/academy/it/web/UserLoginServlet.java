@@ -1,15 +1,15 @@
 package by.academy.it.web;
 
 import by.academy.it.pojo.UserLogin;
-import by.academy.it.userService.UserLoginService;
+import by.academy.it.service.UserLoginService;
+import by.academy.it.service.UserLoginServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+
+import java.io.Serializable;
 
 
 @Controller
@@ -31,8 +31,9 @@ public class UserLoginServlet {
                          @RequestParam String email,
                          Model model) {
         UserLogin userLogin = new UserLogin(login, password, email);
-        if (userLoginService.isLoginValidForRegistration(userLogin.getLogin())) {
-            userLoginService.save(userLogin);
+
+        Serializable id = userLoginService.saveUserLogin(userLogin);
+        if (id != null) {
             model.addAttribute("id", userLogin.getUser().getId());
             return "_userAddInfo";
         } else {

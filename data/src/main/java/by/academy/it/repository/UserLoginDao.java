@@ -1,6 +1,7 @@
-package by.academy.it.data;
+package by.academy.it.repository;
 
 import by.academy.it.pojo.UserLogin;
+import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,13 +9,11 @@ import java.util.List;
 public interface UserLoginDao {
     Serializable saveUserLogin(UserLogin user);
 
-    void safeDeleteUserLogin(Serializable id);
-
     UserLogin readUserLogin(Serializable id);
 
     void updateUserLogin(UserLogin user);
 
-    void hardDeleteUserLogin(Serializable id);               //special interface for administrator
+    void hardDeleteUserLogin(Serializable id);
 
-    List<String> getAllUsersLoginsForCheck();
+    List<UserLogin> getAllUsersLoginsForCheck();
 }
