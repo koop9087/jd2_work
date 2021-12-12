@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
 @RequestMapping("/login/addedInfo")
 @SessionAttributes("id")
-public class UserServlet {
+public class AddInformationController {
 
     @Autowired
     UserService userService;
@@ -29,7 +30,7 @@ public class UserServlet {
     }
 
     @PostMapping
-    public String doPost(@RequestParam String firstName,
+    public ModelAndView doPost(@RequestParam String firstName,
                          @RequestParam String secondName,
                          @ModelAttribute("id") String id) {
         User user = userService.readUser(id);
@@ -38,6 +39,8 @@ public class UserServlet {
         user.setUserStatus("created");
         user.setRole("user");
         userService.updateUser(user);
-        return "_user_welcome";
+        ModelAndView modelAndView = new ModelAndView("_user_welcome");
+        modelAndView.addObject("user",user);
+        return modelAndView;
     }
 }

@@ -92,7 +92,6 @@ a {
     <input name="secondName" type="text" placeholder="Enter your second name" class="form-control" id="secondName" required>
 
     <input type="hidden" name="command" value="add-new-user-info">
-    <input type="hidden" name="user-info-id" value="${id}">
     <button id ="button" type="submit" class="registerbtn">Register</button>
   </div>
 </form>

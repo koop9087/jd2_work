@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Controller
 @RequestMapping("/login")
 @SessionAttributes("id")
-public class UserLoginServlet {
+public class RegistrationController {
 
     @Autowired
     UserLoginService userLoginService;

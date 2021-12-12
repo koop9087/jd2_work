@@ -108,7 +108,7 @@ a {
     <input name="login" type="text" placeholder="Usernames must be lowercase and 4-8 characters in length" class="form-control" id="login" pattern="[a-z]{4,8}" required>
     <div id="check"></div>
     <br/>
-    <label for="psw"><b>Password</b></label>
+    <label for="password"><b>Password</b></label>
     <input name="password" type="text" placeholder="password should consist 8 letters 1 num 1 little and 1 big lattin" class="form-control" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
 
     <label for="email" class="form-label"><b>Email address</b></label>
