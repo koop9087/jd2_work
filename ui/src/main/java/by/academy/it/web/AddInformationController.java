@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
-@RequestMapping("/login/addedInfo")
+@RequestMapping("/profile")
 @SessionAttributes("id")
 public class AddInformationController {
 

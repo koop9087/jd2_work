@@ -79,7 +79,7 @@ a {
 </head>
 <body>
 
-<form method="post" action="/ui/login/addedInfo" class="additional-info">
+<form method="post" action="/ui/profile" class="additional-info">
   <div class="container">
     <h1>Add some information</h1>
     <p>Please fill in this form to add base info into account.</p>
