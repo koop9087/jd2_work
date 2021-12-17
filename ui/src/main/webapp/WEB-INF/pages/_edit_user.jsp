@@ -9,7 +9,7 @@
     <style>
         body {
             font-family: Roboto, Helvetica, sans-serif;
-            background: url(css/img4.png); /* сделать другой фон */
+            background: url(${pageContext.servletContext.contextPath}/css/img4.png ); /* сделать другой фон */
             padding-top: 225px;
         }
 

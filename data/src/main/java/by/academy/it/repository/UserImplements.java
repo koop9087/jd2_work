@@ -1,21 +1,19 @@
 package by.academy.it.repository;
 
+import by.academy.it.pojo.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import by.academy.it.pojo.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
 
 @Repository
-public class UserLoginImplements implements UserLoginDao {
+public class UserImplements implements UserDao {
     public static final Logger logger = Logger.getLogger(
-            UserLoginImplements.class.getName());
+            UserImplements.class.getName());
     public static final String MESSAGE_DELETED_OPERATION_IS_SUCCESSFUL = "DELETED OPERATION IS SUCCESSFUL";
 
     private SessionFactory sessionFactory;
@@ -26,7 +24,7 @@ public class UserLoginImplements implements UserLoginDao {
     }
 
     @Override
-    public Serializable saveUserLogin(UserLogin user) {
+    public Serializable saveUser(User user) {
         Session session = this.sessionFactory.getCurrentSession();
         Serializable id = session.save(user);
         logger.info("User had been saved : " + user);
@@ -34,36 +32,46 @@ public class UserLoginImplements implements UserLoginDao {
     }
 
     @Override
-    public void hardDeleteUserLogin(Serializable id) {
+    public void hardDeleteUser(Serializable id) {
         Session session = this.sessionFactory.getCurrentSession();
-        UserLogin userLogin = (UserLogin) session.load(UserLogin.class, id);
-        if(userLogin != null) {
-            session.delete(userLogin);
-            logger.info("User had been deleted" + userLogin);
+        User user = (User) session.load(User.class, id);
+        if(user != null) {
+            session.delete(user);
+            logger.info("User had been deleted" + user);
         }
     }
 
     @Override
-    public UserLogin readUserLogin(Serializable id) {
+    public User readUser(Serializable id) {
         Session session = this.sessionFactory.getCurrentSession();
-        UserLogin userLoginLoaded = (UserLogin) session.load(UserLogin.class, id);
-        logger.info("User had been readed successfully : " + userLoginLoaded);
-        return userLoginLoaded;
+        User userLoaded = (User) session.load(User.class, id);
+        logger.info("User had been readed successfully : " + userLoaded);
+        return userLoaded;
     }
 
     @Override
-    public void updateUserLogin(UserLogin user) {
+    public void updateUser(User user) {
         Session session = this.sessionFactory.getCurrentSession();
-        logger.info("User had been updated :" + user);
         session.saveOrUpdate(user);
+        logger.info("User had been updated :" + user);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<UserLogin> getAllUsersLoginsForCheck() {
+    public List<User> getAllUsers() {
         Session session = this.sessionFactory.getCurrentSession();
-        List<UserLogin> userLogins = session.createQuery("from UserLogin").list();
-        logger.info("UserLoginList is completed : " + userLogins);
-        return userLogins;
+        List<User> users = session.createQuery("from User").list();
+        logger.info("UserList is completed : " + users);
+        return users;
+    }
+
+    @Override
+    public User readUserFromUrl(String userLink) {
+        Session session = this.sessionFactory.getCurrentSession();
+        User user = (User)session.createQuery("from User where userLink=:userLink")
+                .setParameter("userLink",userLink)
+                .getSingleResult();
+        logger.info("User completely loaded by url : " + user);
+        return user;
     }
 }

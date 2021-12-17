@@ -1,46 +1,37 @@
 package by.academy.it.web;
 
-import by.academy.it.repository.UserDaoImplements;
-import by.academy.it.pojo.User;
-import by.academy.it.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 
-@Controller
-@RequestMapping("/profile")
-@SessionAttributes("id")
-public class AddInformationController {
-
-    @Autowired
-    UserService userService;
-
-    @GetMapping
-    public void doGet(@RequestParam String firstName,
-                      @RequestParam String secondName,
-                      @ModelAttribute("id") String id) {
-        doPost(firstName, secondName, id);
-    }
-
-    @PostMapping
-    public ModelAndView doPost(@RequestParam String firstName,
-                         @RequestParam String secondName,
-                         @ModelAttribute("id") String id) {
-        User user = userService.readUser(id);
-        user.setFirstName(firstName);
-        user.setSecondName(secondName);
-        user.setUserStatus("created");
-        user.setRole("user");
-        userService.updateUser(user);
-        ModelAndView modelAndView = new ModelAndView("_user_welcome");
-        modelAndView.addObject("user",user);
-        return modelAndView;
-    }
-}
+//@Controller
+//@RequestMapping("/profile")
+//@SessionAttributes("id")
+//public class AddInformationController {
+//
+//    //@Autowired
+//    //UserService userService;
+//
+//    @GetMapping
+//    public String redirectToUser(@RequestParam String firstName,
+//                      @RequestParam String secondName,
+//                      @RequestParam String url,
+//                      @ModelAttribute("id") String id) {
+//        return "redirect:/profile/" + id;
+//    }
+//
+//
+//    //@GetMapping(value = "/{url}")
+//    public String getUserInfo(Model model,
+////            @RequestParam String firstName,
+////                        @RequestParam String secondName,
+////                        @RequestParam String url,
+//                        @PathVariable("url") String id) {
+//        //User user = userService.readUser(id);
+//        //model.addAttribute("user", user);
+//        return "_user_welcome";
+//    }
+//}
+//

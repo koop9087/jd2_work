@@ -8,7 +8,7 @@
 <style>
 body {
     font-family: Roboto, Helvetica, sans-serif;
-    background: url(css/img.png);
+    background: url(${pageContext.servletContext.contextPath}/css/img.png );
     padding-top: 125px;
 }
 .registration {
@@ -79,13 +79,13 @@ a {
     $(function () {
         $("#login").keyup(function () {
             $.ajax({
-                url: '/ui/checkServlet',
+                url: '/ui/check',
                 data: {
                     login: $('#login').val()
                 },
-                success: function (response) {
-                    $('#check').text(response);
-                    if(response != "") {
+                success: function (data) {
+                    $('#check').text(data.message);
+                    if(data.successful) {
                         $('#button').attr('disabled', 'disabled');
                     } else {
                         $('#button').removeAttr('disabled', 'disabled');
@@ -107,6 +107,7 @@ a {
     <label for="login"><b>Login</b></label>
     <input name="login" type="text" placeholder="Usernames must be lowercase and 4-8 characters in length" class="form-control" id="login" pattern="[a-z]{4,8}" required>
     <div id="check"></div>
+    <div id="label"></div>
     <br/>
     <label for="password"><b>Password</b></label>
     <input name="password" type="text" placeholder="password should consist 8 letters 1 num 1 little and 1 big lattin" class="form-control" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>

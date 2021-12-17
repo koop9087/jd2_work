@@ -9,7 +9,7 @@
 <style>
 body {
     font-family: Roboto, Helvetica, sans-serif;
-    background: url(css/img4.png);                   /* сделать другой фон */
+    background: url(${pageContext.servletContext.contextPath}/css/img4.png );                   /* сделать другой фон */
     padding-top: 225px;
 }
 
@@ -90,6 +90,9 @@ a {
     <br/>
     <label for="secondName"><b>Second name</b></label>
     <input name="secondName" type="text" placeholder="Enter your second name" class="form-control" id="secondName" required>
+
+    <label for="url" class="form-label"><b>Url pattern</b></label>
+    <input name="url" type="text" placeholder="Enter valid ur profile link" class="form-control" id="url" pattern="[0-9]{0,7}" required>
 
     <input type="hidden" name="command" value="add-new-user-info">
     <button id ="button" type="submit" class="registerbtn">Register</button>

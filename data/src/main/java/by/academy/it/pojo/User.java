@@ -4,11 +4,12 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "T_USER")
 public class User implements Serializable {
-    static final long serialVersionUID = 4L;
+    static final long serialVersionUID = 3L;
 
     @Id
     @Column(name = "USER_ID")
@@ -16,9 +17,19 @@ public class User implements Serializable {
     @GenericGenerator(name = "uuid-generator", strategy = "uuid")
     private String id;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    @JoinColumn(name = "USER_ID")
-    private UserLogin userLogin;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_USER_FRIENDS_ID")
+    private UserFriends userFriends;
+
+    private String login;
+
+    private String password;
+
+    private String email;
+
+    private Date date;
+
+    private String status;
 
     private String firstName;
 
@@ -26,20 +37,31 @@ public class User implements Serializable {
 
     private String role;
 
-    private String userStatus;
+    private String userLink;
 
     public User() {
     }
 
-    public User(String firstName, String secondName) {
-        this.firstName = firstName;
-        this.secondName = secondName;
+    public User(String login, String password, String email) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.date = new Date();
+        this.status = "active";
         this.role = "user";
-        this.userStatus = "created";
+        this.userFriends = new UserFriends();
     }
 
-    public String getId(){
+    public String getId() {
         return id;
+    }
+
+    public UserFriends getUserFriends() {
+        return userFriends;
+    }
+
+    public void setUserFriends(UserFriends userFriends) {
+        this.userFriends = userFriends;
     }
 
     public String getFirstName() {
@@ -58,20 +80,60 @@ public class User implements Serializable {
         this.secondName = secondName;
     }
 
-    public String getUserStatus() {
-        return userStatus;
-    }
-
-    public void setUserStatus(String userStatus) {
-        this.userStatus = userStatus;
-    }
-
     public String getRole() {
         return role;
     }
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getUserLink() {
+        return userLink;
+    }
+
+    public void setUserLink(String userLink) {
+        this.userLink = userLink;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

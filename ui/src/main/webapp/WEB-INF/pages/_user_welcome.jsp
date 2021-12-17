@@ -9,7 +9,7 @@
     <style>
         body {
             font-family: Roboto, Helvetica, sans-serif;
-            background: url(css/img3.png);                   /* сделать другой фон */
+            background: url(${pageContext.servletContext.contextPath}/css/img4.png );                   /* сделать другой фон */
             padding-top: 225px;
         }
 
@@ -79,9 +79,9 @@
 </head>
 <body>
 
-<form method="post" action="/ui/profile/info" class="additional-info">
+<form method="get" action="/ui/profile/${user.userLink}" class="additional-info">
     <div class="container">
-        <h1>${user.firstName} ${user.secondName}</h1>
+        <h1>${user.firstName} ${user.secondName} ${user.userLink}</h1>
         <a href="/ui/edit" class="registerbtn">Edit profile</a>
         <a href="/ui/messages" class="registerbtn">Messages</a>
         <a href="/ui/friends" class="registerbtn">Friends</a>

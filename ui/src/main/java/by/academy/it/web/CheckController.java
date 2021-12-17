@@ -1,31 +1,33 @@
 package by.academy.it.web;
 
-import by.academy.it.service.UserLoginService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import by.academy.it.dto.CheckLoginDto;
+import by.academy.it.pojo.User;
+import by.academy.it.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
+import java.util.List;
 
-
-@Controller
+@RestController
 @RequestMapping("/check")
 public class CheckController {
 
     @Autowired
-    UserLoginService userLoginService;
+    UserService userService;
 
-    public void checkLogin(@RequestParam String login) {
-        //todo
-        //boolean checked = userLoginService.(lineLogin);
-        //if(!checked) {
-          //  resp.getWriter().write("this login is exists");
-        //}
+    @GetMapping
+    @ResponseBody
+    public CheckLoginDto checkLogin(@RequestParam String login) {
+        CheckLoginDto checkLoginDto = new CheckLoginDto();
+        checkLoginDto.setMessage("");
+        checkLoginDto.setSuccessful(false);
+        List<User> userLoginsList = userService.getAllUsers();
+        for (User user : userLoginsList) {
+            if (user.getLogin().equals(login)) {
+                checkLoginDto.setMessage("this login is exists");
+                checkLoginDto.setSuccessful(true);
+            }
+        }
+        return checkLoginDto;
     }
 }

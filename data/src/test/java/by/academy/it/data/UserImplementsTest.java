@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class UserLoginImplementsTest { //todo
+public class UserImplementsTest { //todo
 
     @Before
     public void setUp() throws Exception {
