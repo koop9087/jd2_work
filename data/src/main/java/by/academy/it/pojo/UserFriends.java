@@ -20,6 +20,8 @@ public class UserFriends implements Serializable {
     @JoinColumn(name = "user_USER_LOGIN_id")
     private User user;
 
+    private String friendId;
+
     private String status;
 
     public UserFriends() {
@@ -50,4 +52,11 @@ public class UserFriends implements Serializable {
         return id;
     }
 
+    public String getFriendId() {
+        return friendId;
+    }
+
+    public void setFriendId(String friendId) {
+        this.friendId = friendId;
+    }
 }

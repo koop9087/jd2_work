@@ -18,7 +18,7 @@ public class User implements Serializable {
     private String id;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_USER_FRIENDS_ID")
+    @JoinColumn(name = "USER_FRIENDS_ID")
     private UserFriends userFriends;
 
     private String login;

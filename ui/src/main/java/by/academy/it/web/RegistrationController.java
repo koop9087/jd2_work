@@ -67,8 +67,7 @@ public class RegistrationController {
 
 
     @GetMapping(value = "/profile/{url}")
-    public String getUserInfo(Model model,
-                              @PathVariable("url") String url) {
+    public String getUserInfo(Model model, @PathVariable("url") String url) {
         User user = userService.readUserFromUrl(url);
         model.addAttribute("user", user);
         return "_user_welcome";

@@ -18,4 +18,6 @@ public interface UserService {
     List<User> getAllUsers();
 
     User readUserFromUrl(String url);
+
+    List<User> getUsersByPage(int pageId, int total);
 }

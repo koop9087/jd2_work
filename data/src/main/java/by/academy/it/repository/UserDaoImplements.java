@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Repository
-public class UserImplements implements UserDao {
+public class UserDaoImplements implements UserDao {
     public static final Logger logger = Logger.getLogger(
-            UserImplements.class.getName());
+            UserDaoImplements.class.getName());
     public static final String MESSAGE_DELETED_OPERATION_IS_SUCCESSFUL = "DELETED OPERATION IS SUCCESSFUL";
 
     private SessionFactory sessionFactory;
@@ -35,7 +35,7 @@ public class UserImplements implements UserDao {
     public void hardDeleteUser(Serializable id) {
         Session session = this.sessionFactory.getCurrentSession();
         User user = (User) session.load(User.class, id);
-        if(user != null) {
+        if (user != null) {
             session.delete(user);
             logger.info("User had been deleted" + user);
         }
@@ -68,10 +68,19 @@ public class UserImplements implements UserDao {
     @Override
     public User readUserFromUrl(String userLink) {
         Session session = this.sessionFactory.getCurrentSession();
-        User user = (User)session.createQuery("from User where userLink=:userLink")
-                .setParameter("userLink",userLink)
+        User user = (User) session.createQuery("from User where userLink=:userLink")
+                .setParameter("userLink", userLink)
                 .getSingleResult();
         logger.info("User completely loaded by url : " + user);
         return user;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<User> getUsersByPage(int pageId, int total) {
+        Session session = this.sessionFactory.getCurrentSession();
+        return session.createQuery("from User")
+                .setFirstResult(pageId - 1)
+                .setMaxResults(total).list();
     }
 }

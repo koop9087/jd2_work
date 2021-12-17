@@ -44,4 +44,8 @@ public class UserServiceImpl implements UserService {
     public User readUserFromUrl(String url) {
         return this.userDao.readUserFromUrl(url);
     }
+
+    public List<User> getUsersByPage(int pageId, int total) {
+        return this.userDao.getUsersByPage(pageId, total);
+    }
 }

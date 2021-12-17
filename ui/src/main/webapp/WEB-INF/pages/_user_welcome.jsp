@@ -84,9 +84,40 @@
         <h1>${user.firstName} ${user.secondName} ${user.userLink}</h1>
         <a href="/ui/edit" class="registerbtn">Edit profile</a>
         <a href="/ui/messages" class="registerbtn">Messages</a>
-        <a href="/ui/friends" class="registerbtn">Friends</a>
+        <a href="/ui/friends/1" class="registerbtn">Friends</a>
         <a href="/ui/logout" class="registerbtn">Logout</a>
     </div>
 </form>
+
+<div class="ui-widget">
+    <label for="birds">Birds: </label>
+    <input id="birds">
+</div>
+
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $( function() {
+        function log( message ) {
+            $( "<div>" ).text( message ).prependTo( "#log" );
+            $( "#log" ).scrollTop( 0 );
+        }
+
+        $( "#birds" ).autocomplete({
+            source: "search.jsp",
+            minLength: 2,
+            select: function( event, ui ) {
+                log( "Selected: " + ui.item.value + " aka " + ui.item.id );
+            }
+        });
+    } );
+</script>
+
+<div class="ui-widget" style="margin-top:2em; font-family:Arial">
+    Result:
+    <div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
+</div>
+
 </body>
 </html>
