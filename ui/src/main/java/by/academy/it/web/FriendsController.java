@@ -1,14 +1,14 @@
 package by.academy.it.web;
 
 import by.academy.it.pojo.User;
+import by.academy.it.pojo.UserFriends;
 import by.academy.it.service.UserFriendsService;
 import by.academy.it.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +34,33 @@ public class FriendsController {
         List<User> userList = userService.getUsersByPage(pageId, total);
         model.addAttribute("msg", userList);
         return "viewfriends";
+    }
+
+    @PostMapping(value = "/friends/add/{userLink}")
+    public String addFriend(@PathVariable String userLink,
+                            Model model,
+                            @ModelAttribute("user") User authUserSender) {
+
+        User opponentUserReceiver = userService.readUserFromUrl(userLink);
+
+
+        UserFriends loadedAuthUserSenderFromId = new UserFriends();
+
+
+        loadedAuthUserSenderFromId.setFriendId(opponentUserReceiver.getId());
+        loadedAuthUserSenderFromId.setStatus("is exist");
+        loadedAuthUserSenderFromId.setUserLogin(authUserSender);
+        List<UserFriends> userFriendsList = authUserSender.getUserFriends();
+        userFriendsList.add(loadedAuthUserSenderFromId);
+        userService.updateUser(authUserSender);
+        //UserFriends loadedOpponentUserSenderFromId = userFriendsService.readFriends(opponentUserReceiver.getId());
+
+        //loadedOpponentUserSenderFromId.setFriendId(authUserSender.getId());
+        //loadedOpponentUserSenderFromId.setStatus("is exist");
+
+        userFriendsService.updateFriends(loadedAuthUserSenderFromId);
+        //userFriendsService.updateFriends(loadedOpponentUserSenderFromId);
+
+        return "_user_welcome";
     }
 }

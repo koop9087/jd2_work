@@ -1,6 +1,7 @@
 package by.academy.it.repository;
 
 import by.academy.it.pojo.User;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.io.Serializable;
 import java.util.List;

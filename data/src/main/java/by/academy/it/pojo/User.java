@@ -4,7 +4,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "T_USER")
@@ -17,9 +19,8 @@ public class User implements Serializable {
     @GenericGenerator(name = "uuid-generator", strategy = "uuid")
     private String id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "USER_FRIENDS_ID")
-    private UserFriends userFriends;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserFriends> userFriends;
 
     private String login;
 
@@ -49,18 +50,18 @@ public class User implements Serializable {
         this.date = new Date();
         this.status = "active";
         this.role = "user";
-        this.userFriends = new UserFriends();
+        this.userFriends = new ArrayList<>();
     }
 
     public String getId() {
         return id;
     }
 
-    public UserFriends getUserFriends() {
+    public List<UserFriends> getUserFriends() {
         return userFriends;
     }
 
-    public void setUserFriends(UserFriends userFriends) {
+    public void setUserFriends(List<UserFriends> userFriends) {
         this.userFriends = userFriends;
     }
 

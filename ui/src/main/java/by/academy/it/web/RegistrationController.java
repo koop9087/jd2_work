@@ -1,17 +1,13 @@
 package by.academy.it.web;
 
 import by.academy.it.pojo.User;
+import by.academy.it.pojo.UserFriends;
+import by.academy.it.service.UserFriendsService;
 import by.academy.it.service.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 
@@ -22,6 +18,9 @@ public class RegistrationController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserFriendsService userFriendsService;
 
     @GetMapping("/login")
     public String doGet() {
@@ -57,12 +56,12 @@ public class RegistrationController {
         user.setFirstName(firstName);
         user.setSecondName(secondName);
         user.setUserLink(url);
-        Serializable id = userService.saveUser(user);
-        if (id != null) {
-            return "_user_welcome";
-        } else {
-            return "_user_login";
-        }
+        UserFriends userFriends = new UserFriends();
+        userFriends.setUserLogin(user);
+        userService.updateUser(user);
+        userFriendsService.addFriends(userFriends);
+        return "_user_welcome";
+
     }
 
 

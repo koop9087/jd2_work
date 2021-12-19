@@ -43,7 +43,10 @@ public class UserFriendsDaoImpl implements UserFriendsDao{
     @Override
     public UserFriends readFriends(Serializable id) {
         Session session = this.sessionFactory.getCurrentSession();
-        UserFriends userFriends = (UserFriends) session.load(UserFriends.class, id);
+        UserFriends userFriends = (UserFriends) session
+                .createQuery("from UserFriends where user.id=:id")
+                .setParameter("id", id)
+                .getSingleResult();
         logger.info("User had been readed successfully : " + userFriends);
         return userFriends;
     }

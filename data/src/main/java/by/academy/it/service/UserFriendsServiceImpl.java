@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class UserFriendsServiceImpl implements UserFriendsService{
+public class UserFriendsServiceImpl implements UserFriendsService {
     @Autowired
     private UserFriendsDao userFriendsDao;
 
