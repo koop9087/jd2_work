@@ -105,7 +105,7 @@ a {
     <hr>
 
     <label for="login"><b>Login</b></label>
-    <input name="login" type="text" placeholder="Usernames must be lowercase and 4-8 characters in length" class="form-control" id="login" pattern="[a-z]{4,8}" required>
+    <input name="login" type="text" placeholder="Usernames must be lowercase and 4-8 characters in length" class="form-control" id="login" pattern="[a-z]{4,10}" required>
     <div id="check"></div>
     <div id="label"></div>
     <br/>

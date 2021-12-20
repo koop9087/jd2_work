@@ -17,25 +17,35 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-    public Serializable saveUser(User user) {
-        return this.userDao.saveUser(user);
-    }
+    @Autowired
+    UserInfoValidator userInfoValidator;
 
+    public Serializable saveUser(User user) {
+        if (userInfoValidator.isLoginValid(user)
+                && userInfoValidator.isPasswordValid(user)
+                && userInfoValidator.isEmailValid(user)) {
+            return this.userDao.saveUser(user);
+        } else throw new RuntimeException("cannot add user incorrect data");
+    }
 
     public User readUser(Serializable id) {
         return this.userDao.readUser(id);
     }
 
-
     public void updateUser(User user) {
-        this.userDao.updateUser(user);
+        if (userInfoValidator.isFirstNameValid(user)
+                && userInfoValidator.isSecondNameValid(user)
+                && userInfoValidator.isUserLinkValid(user)) {
+            this.userDao.updateUser(user);
+        } else {
+            this.userDao.hardDeleteUser(user.getId());
+            throw new RuntimeException("cannot update user incorrect data");
+        }
     }
-
 
     public void hardDeleteUser(Serializable id) {
         this.userDao.hardDeleteUser(id);
     }
-
 
     public List<User> getAllUsers() {
         return this.userDao.getAllUsers();

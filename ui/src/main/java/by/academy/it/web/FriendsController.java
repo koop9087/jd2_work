@@ -48,18 +48,22 @@ public class FriendsController {
 
 
         loadedAuthUserSenderFromId.setFriendId(opponentUserReceiver.getId());
-        loadedAuthUserSenderFromId.setStatus("is exist");
+        loadedAuthUserSenderFromId.setStatus("friend");
         loadedAuthUserSenderFromId.setUserLogin(authUserSender);
         List<UserFriends> userFriendsList = authUserSender.getUserFriends();
         userFriendsList.add(loadedAuthUserSenderFromId);
         userService.updateUser(authUserSender);
-        //UserFriends loadedOpponentUserSenderFromId = userFriendsService.readFriends(opponentUserReceiver.getId());
 
-        //loadedOpponentUserSenderFromId.setFriendId(authUserSender.getId());
-        //loadedOpponentUserSenderFromId.setStatus("is exist");
+        UserFriends opponent = new UserFriends();
+        opponent.setFriendId(authUserSender.getId());
+        opponent.setStatus("friend");
+        opponent.setUserLogin(opponentUserReceiver);
+        List<UserFriends> opponentUserList = opponentUserReceiver.getUserFriends();
+        opponentUserList.add(opponent);
+        userService.updateUser(opponentUserReceiver);
 
         userFriendsService.updateFriends(loadedAuthUserSenderFromId);
-        //userFriendsService.updateFriends(loadedOpponentUserSenderFromId);
+        userFriendsService.updateFriends(opponent);
 
         return "_user_welcome";
     }

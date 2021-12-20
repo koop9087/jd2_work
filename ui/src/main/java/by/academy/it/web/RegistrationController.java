@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.util.Random;
 
 
 @Controller
@@ -18,9 +19,6 @@ public class RegistrationController {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    UserFriendsService userFriendsService;
 
     @GetMapping("/login")
     public String doGet() {
@@ -33,6 +31,7 @@ public class RegistrationController {
                          @RequestParam String email,
                          Model model) {
         User user = new User(login, password, email);
+        user.setUserLink(Integer.toString(new Random().nextInt(1_000_000)));
 
         Serializable id = userService.saveUser(user);
         if (id != null) {
@@ -51,17 +50,13 @@ public class RegistrationController {
     @PostMapping("/profile")
     public String saveAddInfoUser(@RequestParam String firstName,
                                   @RequestParam String secondName,
-                                  @RequestParam String url,
+                                  @RequestParam String link,
                                   @ModelAttribute("user") User user) {
         user.setFirstName(firstName);
         user.setSecondName(secondName);
-        user.setUserLink(url);
-        UserFriends userFriends = new UserFriends();
-        userFriends.setUserLogin(user);
+        user.setUserLink(link);
         userService.updateUser(user);
-        userFriendsService.addFriends(userFriends);
         return "_user_welcome";
-
     }
 
 

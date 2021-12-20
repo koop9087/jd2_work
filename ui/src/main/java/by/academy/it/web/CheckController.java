@@ -30,4 +30,20 @@ public class CheckController {
         }
         return checkLoginDto;
     }
+
+    @GetMapping(value = "/checkURL")
+    @ResponseBody
+    public CheckLoginDto checkURL(@RequestParam String link) {
+        CheckLoginDto checkLoginDto = new CheckLoginDto();
+        checkLoginDto.setMessage("");
+        checkLoginDto.setSuccessful(false);
+        List<User> userLoginsList = userService.getAllUsers();
+        for (User user : userLoginsList) {
+            if (user.getUserLink().equals(link)) {
+                checkLoginDto.setMessage("this URL is exists");
+                checkLoginDto.setSuccessful(true);
+            }
+        }
+        return checkLoginDto;
+    }
 }
