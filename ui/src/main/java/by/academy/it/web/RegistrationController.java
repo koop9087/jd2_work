@@ -2,11 +2,14 @@ package by.academy.it.web;
 
 import by.academy.it.pojo.User;
 import by.academy.it.pojo.UserFriends;
+import by.academy.it.service.SecurityService;
 import by.academy.it.service.UserFriendsService;
 import by.academy.it.service.UserService;
+import by.academy.it.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -20,6 +23,12 @@ public class RegistrationController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    SecurityService securityService;
+
+    @Autowired
+    UserValidator userValidator;
+
     @GetMapping("/login")
     public String doGet() {
         return "_user_login";
@@ -29,11 +38,16 @@ public class RegistrationController {
     public String doPost(@RequestParam String login,
                          @RequestParam String password,
                          @RequestParam String email,
+                         BindingResult bindingResult,
                          Model model) {
         User user = new User(login, password, email);
         user.setUserLink(Integer.toString(new Random().nextInt(1_000_000)));
-
+        userValidator.validate(user, bindingResult);
+        if(bindingResult.hasErrors()) {
+            return "_user_login";
+        }
         Serializable id = userService.saveUser(user);
+        securityService.autoLogin(login, password);
         if (id != null) {
             model.addAttribute("user", user);
             return "_userAddInfo";

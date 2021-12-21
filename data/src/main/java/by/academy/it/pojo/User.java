@@ -7,20 +7,26 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "T_USER")
+@Table(name = "users")
 public class User implements Serializable {
     static final long serialVersionUID = 3L;
 
     @Id
-    @Column(name = "USER_ID")
+    @Column(name = "user_id")
     @GeneratedValue(generator = "uuid-generator")
     @GenericGenerator(name = "uuid-generator", strategy = "uuid")
     private String id;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserFriends> userFriends;
+
+    @ManyToMany
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<UserRole> roles;
 
     private String login;
 
@@ -36,8 +42,6 @@ public class User implements Serializable {
 
     private String secondName;
 
-    private String role;
-
     private String userLink;
 
     public User() {
@@ -49,12 +53,19 @@ public class User implements Serializable {
         this.email = email;
         this.date = new Date();
         this.status = "active";
-        this.role = "user";
         this.userFriends = new ArrayList<>();
     }
 
     public String getId() {
         return id;
+    }
+
+    public Set<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<UserRole> roles) {
+        this.roles = roles;
     }
 
     public List<UserFriends> getUserFriends() {
@@ -79,14 +90,6 @@ public class User implements Serializable {
 
     public void setSecondName(String secondName) {
         this.secondName = secondName;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getUserLink() {

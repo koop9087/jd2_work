@@ -1,14 +1,19 @@
 package by.academy.it.service;
 
 import by.academy.it.pojo.User;
+import by.academy.it.pojo.UserRole;
+import by.academy.it.repository.RoleDao;
 import by.academy.it.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional(propagation = Propagation.NESTED)
@@ -18,12 +23,22 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Autowired
+    private RoleDao roleDao;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
     UserInfoValidator userInfoValidator;
 
     public Serializable saveUser(User user) {
         if (userInfoValidator.isLoginValid(user)
                 && userInfoValidator.isPasswordValid(user)
                 && userInfoValidator.isEmailValid(user)) {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            Set<UserRole> roles = new HashSet<>();
+            roles.add(roleDao.getById(1L));
+            user.setRoles(roles);
             return this.userDao.saveUser(user);
         } else throw new RuntimeException("cannot add user incorrect data");
     }
@@ -53,6 +68,10 @@ public class UserServiceImpl implements UserService {
 
     public User readUserFromUrl(String url) {
         return this.userDao.readUserFromUrl(url);
+    }
+
+    public User findByLogin(String login) {
+        return this.userDao.findByLogin(login);
     }
 
     public List<User> getUsersByPage(int pageId, int total) {

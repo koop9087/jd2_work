@@ -6,18 +6,18 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "T_USER_FRIENDS")
+@Table(name = "user_friends")
 public class UserFriends implements Serializable {
     static final long serialVersionUID = 3L;
 
     @Id
-    @Column(name = "USER_FRIENDS_ID")
+    @Column(name = "user_friends_id")
     @GeneratedValue(generator = "uuid-generator")
     @GenericGenerator(name = "uuid-generator", strategy = "uuid")
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "user_id")
     private User user;
 
     private String friendId;

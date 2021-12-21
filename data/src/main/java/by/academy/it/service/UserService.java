@@ -20,4 +20,7 @@ public interface UserService {
     User readUserFromUrl(String url);
 
     List<User> getUsersByPage(int pageId, int total);
+
+    User findByLogin(String login);
+
 }

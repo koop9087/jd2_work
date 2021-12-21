@@ -1,6 +1,7 @@
 package by.academy.it.repository;
 
 import by.academy.it.pojo.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.io.Serializable;
@@ -20,4 +21,6 @@ public interface UserDao {
     User readUserFromUrl(String url);
 
     List<User> getUsersByPage(int pageId, int total);
+
+    User findByLogin(String login);
 }

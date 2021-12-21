@@ -86,4 +86,14 @@ public class UserDaoImplements implements UserDao {
                 .setFirstResult(pageId - 1)
                 .setMaxResults(total).list();
     }
+
+    @Override
+    public User findByLogin(String login) {
+        Session session = this.sessionFactory.getCurrentSession();
+        User user = (User) session.createQuery("from User where login=:login")
+                .setParameter("login", login)
+                .getSingleResult();
+        logger.info("User completely loaded by login : " + user);
+        return user;
+    }
 }
