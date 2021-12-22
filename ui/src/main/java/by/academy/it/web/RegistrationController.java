@@ -29,23 +29,28 @@ public class RegistrationController {
     @Autowired
     UserValidator userValidator;
 
-    @GetMapping("/login")
+
+    @GetMapping("/")
+    public String homePage() {
+        return "home";
+    }
+
+    @GetMapping("login")
     public String doGet() {
         return "_user_login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("login")
     public String doPost(@RequestParam String login,
                          @RequestParam String password,
                          @RequestParam String email,
-                         BindingResult bindingResult,
                          Model model) {
         User user = new User(login, password, email);
         user.setUserLink(Integer.toString(new Random().nextInt(1_000_000)));
-        userValidator.validate(user, bindingResult);
-        if(bindingResult.hasErrors()) {
-            return "_user_login";
-        }
+        //userValidator.validate(user);
+        //if(bindingResult.hasErrors()) {
+        //    return "_user_login";
+        //}
         Serializable id = userService.saveUser(user);
         securityService.autoLogin(login, password);
         if (id != null) {
@@ -56,12 +61,7 @@ public class RegistrationController {
         }
     }
 
-    @GetMapping("/profile")
-    public String redirectToUser() {
-        return "_userAddInfo";
-    }
-
-    @PostMapping("/profile")
+    @PostMapping("/login/add")
     public String saveAddInfoUser(@RequestParam String firstName,
                                   @RequestParam String secondName,
                                   @RequestParam String link,
@@ -70,7 +70,7 @@ public class RegistrationController {
         user.setSecondName(secondName);
         user.setUserLink(link);
         userService.updateUser(user);
-        return "_user_welcome";
+        return "home";
     }
 
 
@@ -79,5 +79,10 @@ public class RegistrationController {
         User user = userService.readUserFromUrl(url);
         model.addAttribute("user", user);
         return "_user_welcome";
+    }
+
+    @GetMapping(value = "home")
+    public String getHome() {
+        return "home";
     }
 }

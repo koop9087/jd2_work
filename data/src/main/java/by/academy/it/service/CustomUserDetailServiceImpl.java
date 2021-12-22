@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class UserDetailServiceImpl implements UserDetailsService {
+public class CustomUserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserDao userDao;
@@ -31,7 +31,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
         for (UserRole role : user.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
-        return new org.springframework.security.core.userdetails.User(user.getLogin(),
+        return new org.springframework.security.core.userdetails.User(
+                user.getLogin(),
                 user.getPassword(),
                 grantedAuthorities);
 

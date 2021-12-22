@@ -37,8 +37,13 @@ public class UserServiceImpl implements UserService {
                 && userInfoValidator.isEmailValid(user)) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             Set<UserRole> roles = new HashSet<>();
-            roles.add(roleDao.getById(1L));
+            UserRole userRole = new UserRole();
+            userRole.setUsers(user);
+            userRole.setId(1L);
+            userRole.setName("ROLE_USER");
+            roles.add(userRole);
             user.setRoles(roles);
+            roleDao.saveRole(userRole);
             return this.userDao.saveUser(user);
         } else throw new RuntimeException("cannot add user incorrect data");
     }
