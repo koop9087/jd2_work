@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,13 +80,13 @@
 </head>
 <body>
 
-<form method="get" action="/ui/profile/${user.userLink}" class="additional-info">
+
+
+<form method="post" action="/ui/profile/add" class="additional-info">
     <div class="container">
-        <h1>${user.firstName} ${user.secondName} ${user.userLink}</h1>
-        <a href="/ui/edit" class="registerbtn">Edit profile</a>
-        <a href="/ui/messages" class="registerbtn">Messages</a>
-        <a href="/ui/friends/1" class="registerbtn">Friends</a>
-        <a href="/ui/logout" class="registerbtn">Logout</a>
+        <input type="hidden" name="testUserLink" value="${user_test.userLink}"/>
+        <h1>${user_test.firstName} ${user_test.secondName} ${user_test.userLink}</h1>
+        <td><button type="submit" name="add" class="btn-link">Add</button></td>
     </div>
 </form>
 

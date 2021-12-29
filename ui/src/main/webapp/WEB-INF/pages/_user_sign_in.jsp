@@ -80,7 +80,7 @@ a {
 </head>
 <body>
 
-<form method="post" action="/ui/sign" class="sign-info">
+<form method="POST" action="/ui/sign" class="sign-info">
   <div class="container">
     <h1>Sign in</h1>
     <p>Please fill in this form to sign in account.</p>

@@ -13,7 +13,9 @@ public interface UserService {
 
     void updateUser(User user);
 
-    void hardDeleteUser(Serializable id);
+    void softDeleteUser(Serializable id, String action, String command);
+
+    void hardDeleteUser(User user);
 
     List<User> getAllUsers();
 
@@ -23,4 +25,7 @@ public interface UserService {
 
     User findByLogin(String login);
 
+    void banUser(Serializable id, String action, String command);
+
+    void unbanUser(Serializable id, String action, String command);
 }

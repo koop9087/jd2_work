@@ -100,7 +100,7 @@
 </head>
 <body>
 
-<form method="post" action="${pageContext.request.contextPath}/login/add" class="additional-info">
+<form method="post" action="${pageContext.request.contextPath}/profile" class="additional-info">
     <div class="container">
         <h1>Add some information</h1>
         <p>Please fill in this form to add base info into account.</p>

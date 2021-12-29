@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/edit")
-@SessionAttributes("id")
+@SessionAttributes("user")
 public class EditController {
 
     @Autowired
@@ -23,13 +23,12 @@ public class EditController {
     @PostMapping
     public String doPost(@RequestParam String firstName,
                                @RequestParam String secondName,
-                               @ModelAttribute("id") String id,
+                               @ModelAttribute("user") User user,
                                Model model) {
-        User user = userService.readUser(id);
         user.setFirstName(firstName);
         user.setSecondName(secondName);
         userService.updateUser(user);
         model.addAttribute("user", user);
-        return "_user_welcome";
+        return "home";
     }
 }

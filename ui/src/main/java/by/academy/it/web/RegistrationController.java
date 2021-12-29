@@ -1,15 +1,12 @@
 package by.academy.it.web;
 
 import by.academy.it.pojo.User;
-import by.academy.it.pojo.UserFriends;
 import by.academy.it.service.SecurityService;
-import by.academy.it.service.UserFriendsService;
 import by.academy.it.service.UserService;
 import by.academy.it.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -29,8 +26,12 @@ public class RegistrationController {
     @Autowired
     UserValidator userValidator;
 
+    @GetMapping(value = "/")
+    public String redirectPage() {
+        return "redirect:/home";
+    }
 
-    @GetMapping("/")
+    @GetMapping("home")
     public String homePage() {
         return "home";
     }
@@ -47,42 +48,34 @@ public class RegistrationController {
                          Model model) {
         User user = new User(login, password, email);
         user.setUserLink(Integer.toString(new Random().nextInt(1_000_000)));
-        //userValidator.validate(user);
-        //if(bindingResult.hasErrors()) {
-        //    return "_user_login";
-        //}
         Serializable id = userService.saveUser(user);
         securityService.autoLogin(login, password);
         if (id != null) {
             model.addAttribute("user", user);
             return "_userAddInfo";
         } else {
-            return "_user_login";
+            return "_error_page";
         }
     }
 
-    @PostMapping("/login/add")
+    @PostMapping("profile")
     public String saveAddInfoUser(@RequestParam String firstName,
                                   @RequestParam String secondName,
                                   @RequestParam String link,
-                                  @ModelAttribute("user") User user) {
+                                  @ModelAttribute("user") User user,
+                                  Model model) {
         user.setFirstName(firstName);
         user.setSecondName(secondName);
         user.setUserLink(link);
         userService.updateUser(user);
-        return "home";
+        return "redirect:/home";
     }
 
-
-    @GetMapping(value = "/profile/{url}")
-    public String getUserInfo(Model model, @PathVariable("url") String url) {
-        User user = userService.readUserFromUrl(url);
-        model.addAttribute("user", user);
-        return "_user_welcome";
-    }
-
-    @GetMapping(value = "home")
-    public String getHome() {
-        return "home";
+    @GetMapping("profile")
+    public String viewHomePage(@ModelAttribute("user") User user) {
+        if(userService.findByLogin(user.getLogin()).equals(user)) {
+            return "home";
+        }
+        return "_error_page";
     }
 }

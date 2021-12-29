@@ -14,7 +14,9 @@ public interface UserDao {
 
     void updateUser(User user);
 
-    void hardDeleteUser(Serializable id);
+    void softDeleteUser(Serializable id);
+
+    void hardDeleteUser(User user);
 
     List<User> getAllUsers();
 
@@ -23,4 +25,8 @@ public interface UserDao {
     List<User> getUsersByPage(int pageId, int total);
 
     User findByLogin(String login);
+
+    void banUser(Serializable id);
+
+    void unbanUser(Serializable id);
 }

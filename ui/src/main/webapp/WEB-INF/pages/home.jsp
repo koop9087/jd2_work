@@ -12,14 +12,24 @@
 <div>
     <h3>${pageContext.request.userPrincipal.name}</h3>
     <sec:authorize access="!isAuthenticated()">
-        <h4><a href="/sign">Войти</a></h4>
-        <h4><a href="/login">Зарегистрироваться</a></h4>
+        <h4><a href="/ui/sign">Войти</a></h4>
+        <h4><a href="/ui/login">Зарегистрироваться</a></h4>
     </sec:authorize>
     <sec:authorize access="isAuthenticated()">
-        <h4><a href="/logout">Выйти</a></h4>
+        <h4><a href="/ui/logout">Выйти</a></h4>
     </sec:authorize>
-    <h4><a href="/welcome">Новости (только пользователь)</a></h4>
-    <h4><a href="/admin">Пользователи (только админ)</a></h4>
+    <sec:authorize access="isAuthenticated()">
+        <h4><a href="/ui/friends">Друзья</a></h4>
+    </sec:authorize>
+    <sec:authorize access="isAuthenticated()">
+        <h4><a href="/ui/edit">Редактирования профиля</a></h4>
+    </sec:authorize>
+    <sec:authorize access="isAuthenticated()">
+        <h4><a href="/ui/users">Пользователи</a></h4>
+    </sec:authorize>
+    <sec:authorize access="hasRole('ADMIN')">
+        <h4><a href="/ui/admin">Пользователи</a></h4>
+    </sec:authorize>
 </div>
 </body>
 </html>

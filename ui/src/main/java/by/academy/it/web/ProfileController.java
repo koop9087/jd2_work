@@ -1,26 +1,23 @@
 package by.academy.it.web;
 
+import by.academy.it.pojo.User;
+import by.academy.it.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-//@RequestMapping("/profile/{url}")
-@SessionAttributes("id")
 public class ProfileController {
 
-    @RequestMapping
-    public ModelAndView doGet(@ModelAttribute("id") String id,
-                      @PathVariable String url) {
-        ModelAndView modelAndView = new ModelAndView("_user_welcome");
-        modelAndView.addObject("url", url);
-        return modelAndView;
+    @Autowired
+    UserService userService;
+
+    @GetMapping(value = "/profile/{url}")
+    public String getUserInfo(Model model, @PathVariable("url") String url) {
+        User user = userService.readUserFromUrl(url);
+        model.addAttribute("user_test", user); //fixme
+        return "_user_welcome";
     }
-
-    @PostMapping
-    public void doPost(@ModelAttribute("id") String id,
-                       @PathVariable String url) {
-
-    }
-
 }

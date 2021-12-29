@@ -98,7 +98,7 @@ a {
 </head>
 <body>
 
-<form method="post" action="/ui/login" class="registration">
+<form method="post" action="${pageContext.request.contextPath}/login" class="registration">
   <div class="container">
     <h1>Register</h1>
     <p>Please fill in this form to create an account.</p>
@@ -120,7 +120,7 @@ a {
     <button id ="button" type="submit" class="registerbtn">Register</button>
   </div>
   <div class="container signin">
-    <p>Already have an account? <a href="${pageContext.request.contextPath}/ui/sign">Sign in</a>.</p>
+    <p>Already have an account? <a href="/ui/sign">Sign in</a>.</p>
   </div>
 </form>
 

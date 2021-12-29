@@ -1,9 +1,11 @@
-package by.academy.it.web;
+package by.academy.it.web.rest;
 
 import by.academy.it.dto.CheckLoginDto;
 import by.academy.it.pojo.User;
 import by.academy.it.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +19,7 @@ public class CheckController {
 
     @GetMapping
     @ResponseBody
-    public CheckLoginDto checkLogin(@RequestParam String login) {
+    public ResponseEntity<CheckLoginDto> checkLogin(@RequestParam String login) {
         CheckLoginDto checkLoginDto = new CheckLoginDto();
         checkLoginDto.setMessage("");
         checkLoginDto.setSuccessful(false);
@@ -28,12 +30,12 @@ public class CheckController {
                 checkLoginDto.setSuccessful(true);
             }
         }
-        return checkLoginDto;
+        return new ResponseEntity<>(checkLoginDto, HttpStatus.OK);
     }
 
     @GetMapping(value = "/checkURL")
     @ResponseBody
-    public CheckLoginDto checkURL(@RequestParam String link) {
+    public ResponseEntity<CheckLoginDto> checkURL(@RequestParam String link) {
         CheckLoginDto checkLoginDto = new CheckLoginDto();
         checkLoginDto.setMessage("");
         checkLoginDto.setSuccessful(false);
@@ -44,6 +46,6 @@ public class CheckController {
                 checkLoginDto.setSuccessful(true);
             }
         }
-        return checkLoginDto;
+        return new ResponseEntity<>(checkLoginDto, HttpStatus.OK);
     }
 }

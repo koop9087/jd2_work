@@ -20,12 +20,17 @@ public class AdminController {
     }
 
     @PostMapping("/admin")
-    public String  deleteUser(@RequestParam(required = true, defaultValue = "" ) String userId,
-                              @RequestParam(required = true, defaultValue = "" ) String action,
-                              Model model) {
-        if (action.equals("delete")){
-            userService.hardDeleteUser(userId);
-        }
+    public String deleteUser(@RequestParam(required = true, defaultValue = "") String userId,
+                             @RequestParam(required = true, defaultValue = "") String action,
+                             Model model) {
+        userService.softDeleteUser(userId, action, "delete");
+        userService.banUser(userId, action, "ban");
+        userService.unbanUser(userId, action, "unban");
         return "redirect:/admin";
+    }
+
+    @GetMapping("/error")
+    public String getErrorPage(){
+        return "/_error_page";
     }
 }

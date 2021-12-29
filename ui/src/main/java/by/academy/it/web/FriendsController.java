@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -21,7 +22,7 @@ public class FriendsController {
     @Autowired
     UserFriendsService userFriendsService;
 
-    @RequestMapping(value = "/friends/{pageId}")
+    @GetMapping(value = "/friends/{pageId}")
     public String viewAllUsersForAddToFriends(@PathVariable int pageId, Model model) {
         int total = 5;
         if(pageId == 1) {
@@ -35,35 +36,43 @@ public class FriendsController {
         return "viewfriends";
     }
 
-    @PostMapping(value = "/friends/add/{userLink}")
-    public String addFriend(@PathVariable String userLink,
-                            Model model,
-                            @ModelAttribute("user") User authUserSender) {
-
-        User opponentUserReceiver = userService.readUserFromUrl(userLink);
-
+    @PostMapping("/profile/add")
+    public String addFriend(@RequestParam String testUserLink,
+                            @ModelAttribute("user") User user) {
+        User opponentUserReceiver = userService.readUserFromUrl(testUserLink);
 
         UserFriends loadedAuthUserSenderFromId = new UserFriends();
 
-
         loadedAuthUserSenderFromId.setFriendId(opponentUserReceiver.getId());
         loadedAuthUserSenderFromId.setStatus("friend");
-        loadedAuthUserSenderFromId.setUserLogin(authUserSender);
-        List<UserFriends> userFriendsList = authUserSender.getUserFriends();
+        loadedAuthUserSenderFromId.setUserLogin(user);
+        List<UserFriends> userFriendsList = user.getUserFriends();
         userFriendsList.add(loadedAuthUserSenderFromId);
-        userService.updateUser(authUserSender);
+        userService.updateUser(user);
+        userFriendsService.updateFriends(loadedAuthUserSenderFromId);
 
         UserFriends opponent = new UserFriends();
-        opponent.setFriendId(authUserSender.getId());
+        opponent.setFriendId(user.getId());
         opponent.setStatus("friend");
         opponent.setUserLogin(opponentUserReceiver);
         List<UserFriends> opponentUserList = opponentUserReceiver.getUserFriends();
         opponentUserList.add(opponent);
         userService.updateUser(opponentUserReceiver);
 
-        userFriendsService.updateFriends(loadedAuthUserSenderFromId);
         userFriendsService.updateFriends(opponent);
 
-        return "_user_welcome";
+        return "redirect:/home";
+    }
+
+    @GetMapping("/friends")
+    public String viewFriendList(@ModelAttribute("user") User user, Model model) {
+            List<UserFriends> userFriends = user.getUserFriends();
+            List<User> friendsList = new ArrayList<>();
+            for(UserFriends friends : userFriends) {
+                User loadedUser = userService.readUser(friends.getFriendId());
+                friendsList.add(loadedUser);
+            }
+            model.addAttribute("friends",friendsList);
+            return "viewfriends";
     }
 }

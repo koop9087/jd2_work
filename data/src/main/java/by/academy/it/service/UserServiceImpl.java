@@ -45,6 +45,7 @@ public class UserServiceImpl implements UserService {
             user.setRoles(roles);
             roleDao.saveRole(userRole);
             return this.userDao.saveUser(user);
+
         } else throw new RuntimeException("cannot add user incorrect data");
     }
 
@@ -58,13 +59,19 @@ public class UserServiceImpl implements UserService {
                 && userInfoValidator.isUserLinkValid(user)) {
             this.userDao.updateUser(user);
         } else {
-            this.userDao.hardDeleteUser(user.getId());
+            this.userDao.softDeleteUser(user.getId());
             throw new RuntimeException("cannot update user incorrect data");
         }
     }
 
-    public void hardDeleteUser(Serializable id) {
-        this.userDao.hardDeleteUser(id);
+    public void softDeleteUser(Serializable id, String action, String command) {
+        if(action.equals(command)){
+            this.userDao.softDeleteUser(id);
+        }
+    }
+
+    public void hardDeleteUser(User user) {
+        this.userDao.hardDeleteUser(user);
     }
 
     public List<User> getAllUsers() {
@@ -81,5 +88,17 @@ public class UserServiceImpl implements UserService {
 
     public List<User> getUsersByPage(int pageId, int total) {
         return this.userDao.getUsersByPage(pageId, total);
+    }
+
+    public void banUser(Serializable id, String action, String command) {
+        if(action.equals(command)){
+            this.userDao.banUser(id);
+        }
+    }
+
+    public void unbanUser(Serializable id, String action, String command) {
+        if(action.equals(command)){
+            this.userDao.unbanUser(id);
+        }
     }
 }

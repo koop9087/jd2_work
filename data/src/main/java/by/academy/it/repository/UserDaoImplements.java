@@ -4,9 +4,6 @@ import by.academy.it.pojo.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -35,19 +32,31 @@ public class UserDaoImplements implements UserDao {
     }
 
     @Override
-    public void hardDeleteUser(Serializable id) {
+    public void softDeleteUser(Serializable id) {
         Session session = this.sessionFactory.getCurrentSession();
         User user = (User) session.load(User.class, id);
         if (user != null) {
-            session.delete(user);
+            user.setStatus("deleted");
+            session.update(user);
             logger.info("User had been deleted" + user);
+        }
+    }
+
+    @Override
+    public void hardDeleteUser(User user) {
+        Session session = this.sessionFactory.getCurrentSession();
+        Serializable id = user.getId();
+        session.delete(user);
+        User loadedUser = session.load(User.class, id);
+        if (loadedUser == null) {
+            logger.info("User had been successfully deleted : " + user);
         }
     }
 
     @Override
     public User readUser(Serializable id) {
         Session session = this.sessionFactory.getCurrentSession();
-        User userLoaded = (User) session.load(User.class, id);
+        User userLoaded = (User) session.get(User.class, id);
         logger.info("User had been readed successfully : " + userLoaded);
         return userLoaded;
     }
@@ -95,5 +104,23 @@ public class UserDaoImplements implements UserDao {
                 .getSingleResult();
         logger.info("User completely loaded by login : " + user);
         return user;
+    }
+
+    @Override
+    public void banUser(Serializable id) {
+        Session session = this.sessionFactory.getCurrentSession();
+        User loadedUser = (User) session.load(User.class, id);
+        loadedUser.setStatus("banned");
+        session.update(loadedUser);
+        logger.info("User had been banned : " + loadedUser);
+    }
+
+    @Override
+    public void unbanUser(Serializable id) {
+        Session session = this.sessionFactory.getCurrentSession();
+        User loadedUser = (User) session.load(User.class, id);
+        loadedUser.setStatus("active");
+        session.update(loadedUser);
+        logger.info("User had been unbanned : " + loadedUser);
     }
 }

@@ -26,6 +26,9 @@ public class User implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL)
     private Set<UserRole> roles;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserMessages> messages;
+
     private String login;
 
     private String password;
@@ -52,10 +55,19 @@ public class User implements Serializable {
         this.date = new Date();
         this.status = "active";
         this.userFriends = new ArrayList<>();
+        this.messages = new ArrayList<>();
     }
 
     public String getId() {
         return id;
+    }
+
+    public List<UserMessages> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<UserMessages> messages) {
+        this.messages = messages;
     }
 
     public Set<UserRole> getRoles() {

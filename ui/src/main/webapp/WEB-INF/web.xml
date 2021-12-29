@@ -21,7 +21,7 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>/WEB-INF/pages/_user_login.jsp</welcome-file>
+        <welcome-file>/WEB-INF/pages/home.jsp</welcome-file>
     </welcome-file-list>
 
 </web-app>
