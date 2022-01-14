@@ -44,7 +44,7 @@ public class UserMessageDaoImpl implements UserMessageDao {
         Session session = this.sessionFactory.getCurrentSession();
         List<UserMessages> messages = session
                 .createQuery("from UserMessages where (user.id=:senderId and recipientId=:recipientId) " +
-                        "or (user.id=:recipientId and recipientId=:senderId)")
+                        "or (user.id=:recipientId and recipientId=:senderId) ORDER BY timestamp")
                 .setParameter("senderId", senderId)
                 .setParameter("recipientId", recipientId)
                 .list();
@@ -55,6 +55,6 @@ public class UserMessageDaoImpl implements UserMessageDao {
     @Override
     public void updateMessage(UserMessages userMessages) {
         Session session = this.sessionFactory.getCurrentSession();
-        session.saveOrUpdate(userMessages);
+        session.update(userMessages);
     }
 }

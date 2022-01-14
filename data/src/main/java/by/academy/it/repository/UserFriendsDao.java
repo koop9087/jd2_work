@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserFriendsDao {
     Serializable addFriends(UserFriends userFriends);
 
-    void deleteFriends(Serializable id);
+    void deleteFriends(Serializable senderId, Serializable recipientId);
 
     UserFriends readFriends(Serializable id);
 

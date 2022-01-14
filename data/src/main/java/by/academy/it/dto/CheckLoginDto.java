@@ -1,15 +1,10 @@
 package by.academy.it.dto;
 
 public class CheckLoginDto {
-    private String message;
     private boolean isSuccessful;
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public CheckLoginDto() {
+        this.isSuccessful = false;
     }
 
     public boolean isSuccessful() {

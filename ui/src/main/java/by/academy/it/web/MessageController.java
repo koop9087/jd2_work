@@ -35,7 +35,7 @@ public class MessageController {
             friendsList.add(loadedUser);
         }
         model.addAttribute("friends", friendsList);
-        model.addAttribute("messages", userMessages);               //SELECT * FROM меседжи WHERE юзер.диалогАйди = меседж.Получатель
+        model.addAttribute("messages", userMessages);
         model.addAttribute("recipient", recipient);
         return "message";
     }
@@ -55,9 +55,9 @@ public class MessageController {
 
         List<UserMessages> userMessagesList = sender.getMessages();
         userMessagesList.add(senderUserMessage);
-        userService.updateUser(sender);
+        sender = userService.readUser(sender.getId());
 
-        userMessageService.updateMessage(senderUserMessage);
+        userMessageService.saveMessage(senderUserMessage);
 
         UserMessages recipientUserMessage = new UserMessages();
         recipientUserMessage.setRecipientId(sender.getId());
@@ -68,9 +68,9 @@ public class MessageController {
 
         List<UserMessages> recipientMessages = recipient.getMessages();
         recipientMessages.add(recipientUserMessage);
-        userService.updateUser(recipient);
+        recipient = userService.readUser(recipient.getId());
 
-        userMessageService.updateMessage(recipientUserMessage);
+        userMessageService.saveMessage(recipientUserMessage);
 
         model.addAttribute("mainUser", sender);
         return "redirect:/messages/{url}";

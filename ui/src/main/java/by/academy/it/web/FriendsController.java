@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class FriendsController {
     @GetMapping(value = "/friends/{pageId}")
     public String viewAllUsersForAddToFriends(@PathVariable int pageId, Model model) {
         int total = 5;
-        if(pageId == 1) {
+        if (pageId == 1) {
 
         } else {
             pageId = (pageId - 1) * total + 1;
@@ -40,9 +41,7 @@ public class FriendsController {
     public String addFriend(@RequestParam String testUserLink,
                             @ModelAttribute("user") User user) {
         User opponentUserReceiver = userService.readUserFromUrl(testUserLink);
-
         UserFriends loadedAuthUserSenderFromId = new UserFriends();
-
         loadedAuthUserSenderFromId.setFriendId(opponentUserReceiver.getId());
         loadedAuthUserSenderFromId.setStatus("friend");
         loadedAuthUserSenderFromId.setUserLogin(user);
@@ -50,7 +49,6 @@ public class FriendsController {
         userFriendsList.add(loadedAuthUserSenderFromId);
         userService.updateUser(user);
         userFriendsService.updateFriends(loadedAuthUserSenderFromId);
-
         UserFriends opponent = new UserFriends();
         opponent.setFriendId(user.getId());
         opponent.setStatus("friend");
@@ -58,21 +56,34 @@ public class FriendsController {
         List<UserFriends> opponentUserList = opponentUserReceiver.getUserFriends();
         opponentUserList.add(opponent);
         userService.updateUser(opponentUserReceiver);
-
         userFriendsService.updateFriends(opponent);
 
         return "redirect:/home";
     }
 
+    @PostMapping("/delete/{url}")
+    public String deleteFriend(@PathVariable("url") String url,
+                               @ModelAttribute("user") User user,
+                               Model model) {
+        User loadedUserRecipient = userService.readUserFromUrl(url);
+        if (loadedUserRecipient == null) {
+            return "_error_page";
+        }
+        userFriendsService.deleteFriends(user.getId(), loadedUserRecipient.getId());
+        user = userService.readUser(user.getId());
+        model.addAttribute("user", user);
+        return "redirect:/home";
+    }
+
     @GetMapping("/friends")
     public String viewFriendList(@ModelAttribute("user") User user, Model model) {
-            List<UserFriends> userFriends = user.getUserFriends();
-            List<User> friendsList = new ArrayList<>();
-            for(UserFriends friends : userFriends) {
-                User loadedUser = userService.readUser(friends.getFriendId());
-                friendsList.add(loadedUser);
-            }
-            model.addAttribute("friends",friendsList);
-            return "viewfriends";
+        List<UserFriends> userFriends = user.getUserFriends();
+        List<User> friendsList = new ArrayList<>();
+        for (UserFriends friends : userFriends) {
+            User loadedUser = userService.readUser(friends.getFriendId());
+            friendsList.add(loadedUser);
+        }
+        model.addAttribute("friends", friendsList);
+        return "viewfriends";
     }
 }

@@ -45,6 +45,12 @@ public class User implements Serializable {
 
     private String userLink;
 
+    private String profileStatus;
+
+    private String gender;
+
+    private String country;
+
     public User() {
     }
 
@@ -56,6 +62,9 @@ public class User implements Serializable {
         this.status = "active";
         this.userFriends = new ArrayList<>();
         this.messages = new ArrayList<>();
+        this.profileStatus = "";
+        this.gender = "";
+        this.country = "";
     }
 
     public String getId() {
@@ -148,6 +157,30 @@ public class User implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getProfileStatus() {
+        return profileStatus;
+    }
+
+    public void setProfileStatus(String profileStatus) {
+        this.profileStatus = profileStatus;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     @Override

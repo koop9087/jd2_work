@@ -1,7 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--suppress ALL --%>
 <!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -273,14 +275,18 @@
             margin-top: 5px;
             display: inline-block;
         }
+
+        input {
+            height: 108px;
+            width: 430px;
+            word-break: break-word;
+        }
     </style>
 
     <form method="post">
+        <spring:message code="messages.chat.placeholder" var="messagePlaceholder"/>
         <div id="container">
             <aside>
-                <header>
-                    <input type="text" placeholder="search">
-                </header>
                 <ul>
                     <c:forEach items="${friends}" var="friend">
                         <li>
@@ -290,10 +296,6 @@
                                             ${friend.firstName} ${friend.secondName}
                                     </a>
                                 </h2>
-                                <h3>
-                                    <span class="status green"></span>
-                                    online
-                                </h3>
                             </div>
                         </li>
                     </c:forEach>
@@ -301,12 +303,10 @@
             </aside>
             <main>
                 <header>
-                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
                     <div>
-                        <h2>Chat with ${recipient.firstName}</h2>
-                        <h3>already 1902 messages</h3>
+                        <h2><spring:message code="messages.chat.value"/> ${recipient.firstName}</h2>
+                    <h6><spring:message code="messages.chat.info"/></h6>
                     </div>
-                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_star.png" alt="">
                 </header>
                 <ul id="chat">
                     <c:forEach items="${messages}" var="message">
@@ -339,8 +339,9 @@
                     </c:forEach>
                 </ul>
                 <footer>
-                    <textarea name="value" placeholder="Type your message"></textarea>
-                    <button type="submit">Send</button>
+                    <input type="text" name="value" placeholder="${messagePlaceholder}"
+                           pattern="[\w\[\]`!@#$%\^&*()={}:;<>+'-]*"></input>
+                    <button type="submit"><spring:message code="add.info.button.value"/></button>
                 </footer>
             </main>
         </div>

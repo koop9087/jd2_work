@@ -79,48 +79,12 @@
     </style>
 </head>
 <body>
-
-
-
 <form method="post" action="/ui/profile/add" class="additional-info">
     <div class="container">
-        <input type="hidden" name="testUserLink" value="${user_test.userLink}"/>
-        <h1>${user_test.firstName} ${user_test.secondName} ${user_test.userLink}</h1>
+        <input type="hidden" name="testUserLink" value="${recipientUser.userLink}"/>
+        <h1>${recipientUser.firstName} ${recipientUser.secondName} ${recipientUser.userLink}</h1>
         <td><button type="submit" name="add" class="btn-link">Add</button></td>
     </div>
 </form>
-
-
-
-<div class="ui-widget">
-    <label for="birds">Birds: </label>
-    <input id="birds">
-</div>
-
-
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-    $( function() {
-        function log( message ) {
-            $( "<div>" ).text( message ).prependTo( "#log" );
-            $( "#log" ).scrollTop( 0 );
-        }
-
-        $( "#birds" ).autocomplete({
-            source: "search.jsp",
-            minLength: 2,
-            select: function( event, ui ) {
-                log( "Selected: " + ui.item.value + " aka " + ui.item.id );
-            }
-        });
-    } );
-</script>
-
-<div class="ui-widget" style="margin-top:2em; font-family:Arial">
-    Result:
-    <div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
-</div>
-
 </body>
 </html>

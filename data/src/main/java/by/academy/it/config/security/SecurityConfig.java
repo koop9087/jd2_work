@@ -1,4 +1,4 @@
-package by.academy.it.web;
+package by.academy.it.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,12 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login*").not().fullyAuthenticated()
+                .antMatchers("/register/**", "/sign/**").not().fullyAuthenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/friends/**", "/edit/**", "/login/**", "/profile").hasRole("USER")
-                .antMatchers("/", "/profile/**", "/home/**", "/sign/**", "/check/**").permitAll()
-                .anyRequest()
-                .authenticated()
+                .antMatchers("/friends/**", "/edit/**", "/profile").hasRole("USER")
+                .antMatchers("/", "/profile/**", "/home/**", "/check/**", "/error/**").permitAll()
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/error")

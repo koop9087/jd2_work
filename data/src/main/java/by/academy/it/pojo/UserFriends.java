@@ -16,7 +16,7 @@ public class UserFriends implements Serializable {
     @GenericGenerator(name = "uuid-generator", strategy = "uuid")
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

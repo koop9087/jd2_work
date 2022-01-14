@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Repository
-public class UserFriendsDaoImpl implements UserFriendsDao{
+public class UserFriendsDaoImpl implements UserFriendsDao {
     public static final Logger logger = Logger.getLogger(
             UserFriendsDaoImpl.class.getName());
     private SessionFactory sessionFactory;
@@ -30,14 +30,19 @@ public class UserFriendsDaoImpl implements UserFriendsDao{
     }
 
     @Override
-    public void deleteFriends(Serializable id) {
+    public void deleteFriends(Serializable senderId, Serializable recipientId) {
         Session session = this.sessionFactory.getCurrentSession();
-        UserFriends userFriends = (UserFriends) session.load(UserFriends.class, id);
-        userFriends.setStatus("deleted");
-        if(userFriends != null) {
-            session.update(userFriends);
-            logger.info("User had been deleted" + userFriends);
-        }
+        UserFriends userFriendsSender = (UserFriends) session.createQuery("from UserFriends where friendId=:senderId and user.id=:recipientId")
+                .setParameter("senderId", senderId)
+                .setParameter("recipientId", recipientId)
+                .getSingleResult();
+        UserFriends userFriendsRecipient = (UserFriends) session.createQuery("from UserFriends where friendId=:recipientId and user.id=:senderId")
+                .setParameter("recipientId", recipientId)
+                .setParameter("senderId", senderId)
+                .getSingleResult();
+        session.delete(userFriendsSender);
+        session.delete(userFriendsRecipient);
+        logger.info("User had been deleted" + userFriendsSender + userFriendsRecipient);
     }
 
     @Override

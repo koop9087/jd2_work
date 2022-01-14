@@ -1,8 +1,11 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
@@ -79,18 +82,20 @@
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script>
         $(function () {
-            $("#link").keyup(function () {
+            $("#url").keyup(function () {
                 $.ajax({
                     url: '/ui/check/checkURL',
                     data: {
-                        link: $('#link').val()
+                        link: $('#url').val()
                     },
                     success: function (data) {
-                        $('#check').text(data.message);
+                        $('#urlMessage').text(data.message);
                         if (data.successful) {
                             $('#button').attr('disabled', 'disabled');
+                            $('#urlMessage').show();
                         } else {
                             $('#button').removeAttr('disabled', 'disabled');
+                            $('#urlMessage').hide();
                         }
                     }
                 });
@@ -100,27 +105,35 @@
 </head>
 <body>
 
-<form method="post" action="${pageContext.request.contextPath}/profile" class="additional-info">
+<form:form class="additional-info" method="post" action="${pageContext.request.contextPath}/profile"
+           modelAttribute="registrationWrapper">
+    <spring:message code="add.info.firstName.placeholder" var="validFirstNameMessage"/>
+    <spring:message code="add.info.secondName.placeholder" var="validSecondNameMessage"/>
+    <spring:message code="add.info.url.placeholder" var="validUrlMessage"/>
     <div class="container">
-        <h1>Add some information</h1>
-        <p>Please fill in this form to add base info into account.</p>
+        <h1><spring:message code="add.info.info.value"/></h1>
+        <p><spring:message code="add.info.fill.info.value"/></p>
         <hr>
-
-        <label for="firstName"><b>First name</b></label>
-        <input name="firstName" type="text" placeholder="Enter your first name" class="form-control" id="firstName"
-              pattern="^[a-zA-Z]{1,100}$" required>
-        <br/>
-        <label for="secondName"><b>Second name</b></label>
-        <input name="secondName" type="text" placeholder="Enter your second name" class="form-control" id="secondName"
-               pattern ="^[a-zA-Z]{1,50}$" required>
-
-        <label for="link" class="form-label"><b>Url pattern</b></label>
-        <input name="link" type="text" placeholder="Enter valid ur profile link" class="form-control" id="link"
-               pattern="[0-9]{1,7}" required>
-        <div id="check"></div>
+        <label for="firstName"><b><spring:message code="add.info.firstName.value"/></b></label>
+        <form:input path="firstName" type="text" placeholder="${validFirstNameMessage}" class="form-control"
+                    id="firstName"
+                    pattern="^[a-zA-Z]{1,100}$"/>
+        <p/>
+        <label for="secondName"><b><spring:message code="add.info.secondName.value"/></b></label>
+        <form:input path="secondName" type="text" placeholder="${validSecondNameMessage}" class="form-control"
+                    id="secondName"
+                    pattern="^[a-zA-Z]{1,50}$"/>
+        <p/>
+        <label for="url" class="form-label"><b><spring:message code="add.info.url.value"/></b></label>
+        <form:input path="url" type="text" placeholder="${validUrlMessage}" class="form-control" id="url"
+                    pattern="[0-9]{1,7}"/>
+        <div id="urlMessage" hidden>
+            <spring:message code="rest.info.url.value"/>
+        </div>
+        </p>
         <input type="hidden" name="command" value="add-new-user-info">
-        <button id="button" type="submit" class="registerbtn">Register</button>
+        <button id="button" type="submit" class="registerbtn"><spring:message code="add.info.button.value"/></button>
     </div>
-</form>
+</form:form>
 </body>
 </html>

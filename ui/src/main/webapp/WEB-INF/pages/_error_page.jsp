@@ -1,3 +1,7 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +14,7 @@
         body {
             background-color: #2F3242;
         }
+
         svg {
             position: absolute;
             top: 50%;
@@ -17,6 +22,7 @@
             margin-top: -250px;
             margin-left: -400px;
         }
+
         .message-box {
             height: 200px;
             width: 380px;
@@ -29,14 +35,17 @@
             font-family: Roboto;
             font-weight: 300;
         }
+
         .message-box h1 {
             font-size: 60px;
             line-height: 46px;
             margin-bottom: 40px;
         }
+
         .buttons-con .action-link-wrap {
             margin-top: 40px;
         }
+
         .buttons-con .action-link-wrap a {
             background: #68c950;
             padding: 8px 25px;
@@ -49,23 +58,28 @@
             text-decoration: none;
             margin-right: 10px
         }
+
         .buttons-con .action-link-wrap a:hover {
             background: #5A5C6C;
             color: #fff;
         }
 
-        #Polygon-1 , #Polygon-2 , #Polygon-3 , #Polygon-4 , #Polygon-4, #Polygon-5 {
+        #Polygon-1, #Polygon-2, #Polygon-3, #Polygon-4, #Polygon-4, #Polygon-5 {
             animation: float 1s infinite ease-in-out alternate;
         }
+
         #Polygon-2 {
             animation-delay: .2s;
         }
+
         #Polygon-3 {
             animation-delay: .4s;
         }
+
         #Polygon-4 {
             animation-delay: .6s;
         }
+
         #Polygon-5 {
             animation-delay: .8s;
         }
@@ -75,6 +89,7 @@
                 transform: translateY(20px);
             }
         }
+
         @media (max-width: 450px) {
             svg {
                 position: absolute;
@@ -83,6 +98,7 @@
                 margin-top: -250px;
                 margin-left: -190px;
             }
+
             .message-box {
                 top: 50%;
                 left: 50%;
@@ -109,11 +125,21 @@
     </svg>
     <div class="message-box">
         <h1>404</h1>
-        <p>Page not found</p>
+        <c:choose>
+            <c:when test="${status eq 'deleted'}">
+                <p><spring:message code="error.cause.value.deleted"/></p>
+            </c:when>
+            <c:when test="${status eq 'banned'}">
+                <p><spring:message code="error.cause.value.banned"/></p>
+            </c:when>
+            <c:otherwise>
+                <p><spring:message code="error.notFound"/></p>
+            </c:otherwise>
+        </c:choose>
         <div class="buttons-con">
             <div class="action-link-wrap">
-                <a onclick="history.back(-1)" class="link-button link-back-button">Go Back</a>
-                <a href="/ui/home" class="link-button">Go to Home Page</a>
+                <p><spring:message code="error.back" /> <a onclick="history.back(-1)" class="link-button link-back-button"></a></p>
+                <p><spring:message code="error.home" /> <a href="/ui/home" class="link-button"></a></p>
             </div>
         </div>
     </div>

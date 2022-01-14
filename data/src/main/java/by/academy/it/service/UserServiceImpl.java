@@ -54,18 +54,11 @@ public class UserServiceImpl implements UserService {
     }
 
     public void updateUser(User user) {
-        if (userInfoValidator.isFirstNameValid(user)
-                && userInfoValidator.isSecondNameValid(user)
-                && userInfoValidator.isUserLinkValid(user)) {
-            this.userDao.updateUser(user);
-        } else {
-            this.userDao.softDeleteUser(user.getId());
-            throw new RuntimeException("cannot update user incorrect data");
-        }
+        this.userDao.updateUser(user);
     }
 
     public void softDeleteUser(Serializable id, String action, String command) {
-        if(action.equals(command)){
+        if (action.equals(command)) {
             this.userDao.softDeleteUser(id);
         }
     }
@@ -91,13 +84,13 @@ public class UserServiceImpl implements UserService {
     }
 
     public void banUser(Serializable id, String action, String command) {
-        if(action.equals(command)){
+        if (action.equals(command)) {
             this.userDao.banUser(id);
         }
     }
 
     public void unbanUser(Serializable id, String action, String command) {
-        if(action.equals(command)){
+        if (action.equals(command)) {
             this.userDao.unbanUser(id);
         }
     }

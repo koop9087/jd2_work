@@ -17,7 +17,7 @@ public class ProfileController {
     @GetMapping(value = "/profile/{url}")
     public String getUserInfo(Model model, @PathVariable("url") String url) {
         User user = userService.readUserFromUrl(url);
-        model.addAttribute("user_test", user); //fixme
+        model.addAttribute("recipientUser", user);
         return "_user_welcome";
     }
 }

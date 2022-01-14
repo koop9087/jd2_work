@@ -21,8 +21,8 @@ public class UserFriendsServiceImpl implements UserFriendsService {
     }
 
     @Override
-    public void deleteFriends(Serializable id) {
-        this.userFriendsDao.deleteFriends(id);
+    public void deleteFriends(Serializable senderId, Serializable recipientId) {
+        this.userFriendsDao.deleteFriends(senderId, recipientId);
     }
 
     @Override
