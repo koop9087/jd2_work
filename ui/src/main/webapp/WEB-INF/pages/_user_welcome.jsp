@@ -1,4 +1,7 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,11 +82,10 @@
     </style>
 </head>
 <body>
-<form method="post" action="/ui/profile/add" class="additional-info">
+<form class="additional-info">
     <div class="container">
         <input type="hidden" name="testUserLink" value="${recipientUser.userLink}"/>
         <h1>${recipientUser.firstName} ${recipientUser.secondName} ${recipientUser.userLink}</h1>
-        <td><button type="submit" name="add" class="btn-link">Add</button></td>
     </div>
 </form>
 </body>

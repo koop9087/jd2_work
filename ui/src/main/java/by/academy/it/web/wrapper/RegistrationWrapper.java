@@ -1,6 +1,7 @@
 package by.academy.it.web.wrapper;
 
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class RegistrationWrapper {
     @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", message = "Incorrect password. Repeat please")
@@ -9,23 +10,17 @@ public class RegistrationWrapper {
     @Pattern(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", message = "Incorrect e-mail. Repeat please")
     private String email;
 
-    @Pattern(regexp = "^[a-zA-Z]{1,100}$", message = "Incorrect first name. Repeat please")
+    @Size(max = 100)
+    @Pattern(regexp = "^[a-zA-Z]*$", message = "Incorrect first name. Repeat please")
     private String firstName;
 
-    @Pattern(regexp = "^[a-zA-Z]{1,50}$", message = "Incorrect second name. Repeat please")
+    @Size(max = 50)
+    @Pattern(regexp = "^[a-zA-Z]*$", message = "Incorrect second name. Repeat please")
     private String secondName;
 
-    @Pattern(regexp = "[0-9]{1,7}", message = "Incorrect url. Repeat please")
+    @Size(max = 7)
+    @Pattern(regexp = "[0-9]*", message = "Incorrect url. Repeat please")
     private String url;
-
-    @Pattern(regexp = "^[a-zA-Z]{1,20}$", message = "Incorrect status. Repeat please")
-    private String profileStatus;
-
-    @Pattern(regexp = "^[a-zA-Z]{1,10}$", message = "Incorrect gender value. Repeat please")
-    private String gender;
-
-    @Pattern(regexp = "^[a-zA-Z]{1,14}$", message = "Incorrect country value. Repeat please")
-    private String country;
 
     public String getPassword() {
         return password;

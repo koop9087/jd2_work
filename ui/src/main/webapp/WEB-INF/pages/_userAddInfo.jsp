@@ -117,16 +117,16 @@
         <label for="firstName"><b><spring:message code="add.info.firstName.value"/></b></label>
         <form:input path="firstName" type="text" placeholder="${validFirstNameMessage}" class="form-control"
                     id="firstName"
-                    pattern="^[a-zA-Z]{1,100}$"/>
+                    pattern="^[a-zA-Z]{0,100}$"/>
         <p/>
         <label for="secondName"><b><spring:message code="add.info.secondName.value"/></b></label>
         <form:input path="secondName" type="text" placeholder="${validSecondNameMessage}" class="form-control"
                     id="secondName"
-                    pattern="^[a-zA-Z]{1,50}$"/>
+                    pattern="^[a-zA-Z]{0,50}$"/>
         <p/>
         <label for="url" class="form-label"><b><spring:message code="add.info.url.value"/></b></label>
         <form:input path="url" type="text" placeholder="${validUrlMessage}" class="form-control" id="url"
-                    pattern="[0-9]{1,7}"/>
+                    pattern="[0-9]{0,7}"/>
         <div id="urlMessage" hidden>
             <spring:message code="rest.info.url.value"/>
         </div>

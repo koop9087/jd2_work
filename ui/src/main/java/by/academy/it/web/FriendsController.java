@@ -39,7 +39,8 @@ public class FriendsController {
 
     @PostMapping("/profile/add")
     public String addFriend(@RequestParam String testUserLink,
-                            @ModelAttribute("user") User user) {
+                            @ModelAttribute("user") User user,
+                            Model model) {
         User opponentUserReceiver = userService.readUserFromUrl(testUserLink);
         UserFriends loadedAuthUserSenderFromId = new UserFriends();
         loadedAuthUserSenderFromId.setFriendId(opponentUserReceiver.getId());
@@ -57,7 +58,7 @@ public class FriendsController {
         opponentUserList.add(opponent);
         userService.updateUser(opponentUserReceiver);
         userFriendsService.updateFriends(opponent);
-
+        model.addAttribute("user", user);
         return "redirect:/home";
     }
 
@@ -71,6 +72,7 @@ public class FriendsController {
         }
         userFriendsService.deleteFriends(user.getId(), loadedUserRecipient.getId());
         user = userService.readUser(user.getId());
+        userService.updateUser(loadedUserRecipient);
         model.addAttribute("user", user);
         return "redirect:/home";
     }

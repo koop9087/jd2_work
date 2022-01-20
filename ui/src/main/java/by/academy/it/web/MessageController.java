@@ -44,34 +44,26 @@ public class MessageController {
     public String sendMessage(@PathVariable("url") String url, @ModelAttribute("user") User sender, Model model,
                               @RequestParam String value) {
         User recipient = userService.readUserFromUrl(url);
-
         UserMessages senderUserMessage = new UserMessages();
-
         senderUserMessage.setRecipientId(recipient.getId());
         senderUserMessage.setStatus("DELIVERED");
         senderUserMessage.setTimestamp(new Date());
         senderUserMessage.setValue(value);
         senderUserMessage.setUser(sender);
-
         List<UserMessages> userMessagesList = sender.getMessages();
         userMessagesList.add(senderUserMessage);
         sender = userService.readUser(sender.getId());
-
         userMessageService.saveMessage(senderUserMessage);
-
         UserMessages recipientUserMessage = new UserMessages();
         recipientUserMessage.setRecipientId(sender.getId());
         recipientUserMessage.setValue(value);
         recipientUserMessage.setTimestamp(new Date());
         recipientUserMessage.setStatus("RECEIVED");
         recipientUserMessage.setUser(sender);
-
         List<UserMessages> recipientMessages = recipient.getMessages();
         recipientMessages.add(recipientUserMessage);
         recipient = userService.readUser(recipient.getId());
-
         userMessageService.saveMessage(recipientUserMessage);
-
         model.addAttribute("mainUser", sender);
         return "redirect:/messages/{url}";
     }

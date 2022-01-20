@@ -21,6 +21,7 @@
     </bean>
 
     <mvc:interceptors>
+        <bean id="myCustomInterceptor" class="by.academy.it.web.interceptor.MyCustomInterceptor"/>
         <mvc:interceptor>
             <mvc:mapping path="/*"/>
             <ref bean="localeChangeInterceptor"/>

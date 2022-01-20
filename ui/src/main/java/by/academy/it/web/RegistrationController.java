@@ -19,7 +19,7 @@ import java.util.Random;
 @Controller
 @SessionAttributes("user")
 public class RegistrationController {
-
+    private static final String ANONYMOUS_NAME = "Anonymous";
     @Autowired
     UserService userService;
 
@@ -51,8 +51,8 @@ public class RegistrationController {
                               BindingResult bindingResult,
                               Model model) {
         User user = new User(login, registrationWrapper.getPassword(), registrationWrapper.getEmail());
-        user.setFirstName("Anonymous");
-        user.setSecondName("Anonymous");
+        user.setFirstName(ANONYMOUS_NAME);
+        user.setSecondName(ANONYMOUS_NAME);
         user.setUserLink(Integer.toString(new Random().nextInt(1_000_000)));
         Serializable id = null;
         if (!bindingResult.hasErrors()) {
@@ -72,11 +72,7 @@ public class RegistrationController {
     public String saveAddInfoUser(@ModelAttribute @Valid RegistrationWrapper registrationWrapper,
                                   BindingResult bindingResult,
                                   @ModelAttribute("user") User user) {
-        user.setFirstName(registrationWrapper.getFirstName());
-        user.setSecondName(registrationWrapper.getSecondName());
-        if (!StringUtils.isEmpty(registrationWrapper.getUrl())) {
-            user.setUserLink(registrationWrapper.getUrl());
-        }
+        changeFields(registrationWrapper, user);
         if (!bindingResult.hasErrors()) {
             userService.updateUser(user);
             return "redirect:/home";
@@ -87,7 +83,7 @@ public class RegistrationController {
 
     @GetMapping("profile")
     public String viewHomePage(@ModelAttribute("user") User user, Model model) {
-        if(user.getStatus().equals("deleted") || user.getStatus().equals("banned")) {
+        if (user.getStatus().equals("deleted") || user.getStatus().equals("banned")) {
             model.addAttribute("status", user.getStatus());
             return "_error_page";
         }
@@ -95,5 +91,24 @@ public class RegistrationController {
             return "home";
         }
         return "_error_page";
+    }
+
+    private void changeFields(RegistrationWrapper registrationWrapper, User user) {
+        String firstName = registrationWrapper.getFirstName();
+        if (!StringUtils.isEmpty(firstName)) {
+            user.setFirstName(firstName);
+        } else {
+            user.setFirstName(ANONYMOUS_NAME);
+        }
+        String secondName = registrationWrapper.getSecondName();
+        if (!StringUtils.isEmpty(secondName)) {
+            user.setSecondName(secondName);
+        } else {
+            user.setSecondName(ANONYMOUS_NAME);
+        }
+        String url = registrationWrapper.getUrl();
+        if (!StringUtils.isEmpty(url)) {
+            user.setUserLink(url);
+        }
     }
 }

@@ -285,6 +285,6 @@
             </form:select>
             <div class="select-arrow"></div>
         </div>
-        <button type="submit"><spring:message code="edit.button.value"/></button>
+        <button type="submit" id="button"><spring:message code="edit.button.value"/></button>
     </form:form>
 </div>
