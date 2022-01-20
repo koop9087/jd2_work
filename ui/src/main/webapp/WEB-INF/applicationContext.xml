@@ -4,6 +4,5 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <import resource="classpath:context/applicationContext-controller.xml"/>
     <import resource="classpath:context/applicationContext-data.xml"/>
 </beans>
